@@ -1,0 +1,108 @@
+/*
+ID: shadime1
+PROG: namenum
+LANG: C++
+*/
+#include <iostream>
+#include <fstream>
+#include <set>
+#include <vector>
+using namespace std;
+set <string> s;
+const int maxn=40;
+vector<string> c[maxn];
+int a[maxn] , b[maxn];
+
+int P3(int x)
+{
+	int r=1;
+	for(int i=0;i<x;i++)
+		r*=3;
+	return r;
+}
+int PIA(long long x)
+{
+	int s=0;
+	while(x>0)
+	{
+		a[s]=x%10;
+		x/=10;
+		s++;
+	}
+	return s;
+}
+void Mabna(long long x)
+{
+	int s=0;
+	while(x>0)
+	{
+		b[s]=x%3;
+		x/=3;
+		s++;
+	}
+	for(int i=11;i>=s;i--)
+		b[i]=0;
+}
+string name(int s)
+{
+	string g;
+	for(int i=s-1;i>=0;i--)
+		g+=c[a[i]][b[i]];
+	return g;
+}
+
+int main()
+{
+	ios::sync_with_stdio(false);
+	ifstream fin ("namenum.in");
+	ifstream fis ("dict.txt");
+	ofstream fout ("namenum.out");
+	c[2].push_back("A");
+	c[2].push_back("B");
+	c[2].push_back("C");
+	c[3].push_back("D");
+	c[3].push_back("E");
+	c[3].push_back("F");
+	c[4].push_back("G");
+	c[4].push_back("H");
+	c[4].push_back("I");
+	c[5].push_back("J");
+	c[5].push_back("K");
+	c[5].push_back("L");
+	c[6].push_back("M");
+	c[6].push_back("N");
+	c[6].push_back("O");
+	c[7].push_back("P");
+	c[7].push_back("R");
+	c[7].push_back("S");
+	c[8].push_back("T");
+	c[8].push_back("U");
+	c[8].push_back("V");
+	c[9].push_back("X");
+	c[9].push_back("Y");
+	c[9].push_back("Z");
+	long long n , tedad=0;
+	fin >> n;
+	long long k=n%10;
+	int size=PIA(n);
+	for(int i=0;i<=4617;i++)
+	{
+		string p;
+		fis >> p;
+		if(p.size()==size)
+			s.insert(p);
+	}
+	int halat=P3(size);
+	for(int i=0;i<halat;i++)
+	{
+		Mabna(i);
+		string u=name(size);
+		if(s.find(u)!=s.end())
+		{
+			tedad++;
+			fout << u << endl;
+		}
+	}
+	if(tedad==0)
+		fout << "NONE" << endl;
+}

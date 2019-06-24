@@ -1,0 +1,110 @@
+#include <iostream>
+#include <algorithm>
+#include <sstream>
+#include <string>
+#include <cstdio>
+
+using namespace std;
+const int maxn=1000+5;
+int a[maxn];
+bool d[maxn][maxn];
+int n;
+
+void rev(int e,int f)
+{
+	int k=1;
+	int z1=max(e,f) , z2=min(e,f);
+	reverse(a + z2, a+z1 + 1);
+	return;
+}
+void fix(int x)
+{
+	int k=(x+1)%n , s=1;
+	if(d[a[x]][a[k]])
+		return;
+	for(int i=k+1;;i++)
+	{
+		int y , z;
+		y=i%n;
+		z=(i+1)%n;
+		if(d[a[x]][a[y]] and d[a[k]][a[z]])
+		{
+			rev(k,y);
+			return;
+		}
+	}
+}
+int Check()
+{
+	for(int i=0;i<n;i++)
+		if(d[a[i]][a[((i+1)%n)]]==0)
+			return i;
+	return -1;
+}
+void Print()
+{
+	int flag=0 , g=0;
+	for(int i=0;;i++)
+	{
+		if(flag)
+		{
+			if(i==n)
+				i=0;
+			printf("%d ",a[i]+1);
+			if(i==g)
+				return ;
+		}
+		else if(flag==0)
+			if(a[i]==0)
+			{
+				flag=1;
+				g=i;
+			}
+	}
+}
+
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin >> n;
+	string s;
+	getline(cin,s);
+	printf("1 ");
+	for(int i=0;i<n;i++)
+	{
+		cerr << "!!!!!!!!!!" << i << " " << n << endl;
+		a[i]=i;
+		getline(cin,s);
+		cerr << s << endl;
+		int x = 0;
+		for(int j=0; j<s.size(); j++)
+		{
+			if(s[j] == ' ' && x)
+			{
+				d[i][x-1]=1;
+				d[x-1][i]=1;
+				x = 0;
+			}
+			else
+				x = x * 10 + s[j] - '0';
+		}
+		if(x)
+		{
+			d[i][x-1]=1;
+			d[x-1][i]=1;
+		}
+
+	}
+	while(1)
+	{
+		int h=Check();
+		if(h==-1)
+		{
+			Print();
+			break;
+		}
+		else
+			fix(h);
+	}
+	printf("\n");
+}

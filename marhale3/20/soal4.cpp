@@ -1,0 +1,52 @@
+#include <iostream>
+using namespace std;
+int a[65] , w[65];
+int winner()
+{
+	for(int i=1;i<=60;i++)
+		if(a[i]==0)
+			return i;
+}
+int main()
+{
+	int delta , ans=1;
+	cin >> delta;
+	for(int i=1;i<=60;i++)
+	{
+		int flag=60,j=i; 
+		while(flag>1)
+		{
+			a[j]=1;
+			flag--;
+			if(flag>1)
+			{
+				int x=0;
+				int s=j%flag;
+				if(s==0)
+					s=flag;
+				for(int k=j+1;x<s;k++)
+				{
+					k%=60;
+					if(k==0)
+						k=60;
+					if(a[k]==0)
+					{
+						x++;
+						if(x==s)
+							j=k;
+					}
+				}
+			}
+		}
+		w[i]=winner();
+		cerr << i << " %% " << w[i] << endl;
+		for(int k=1;k<=60;k++)
+			a[k]=0;
+	}
+	for(int i=1;i<=60;i++)
+	{
+		ans*=w[i];
+		ans%=delta;
+	}
+	cout << endl << ans << endl;
+}

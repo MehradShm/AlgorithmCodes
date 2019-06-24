@@ -1,0 +1,51 @@
+/*
+ID: shadime1
+PROG: ride
+LANG: C++
+*/
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <vector>
+
+using namespace std;
+vector <pair<char,int> > x;
+
+int main()
+{
+	ifstream fin ("ride.in");
+	ofstream fout ("ride.out");
+	int ta=1 , tb=1;
+	string a , b;
+	fin >> a >> b;
+	for(int i=0;i<26;i++)
+	{
+		pair<char,int> p;
+		p.first=char(('A'-'0')+i+'0');
+		p.second=i+1;
+		x.push_back(p);
+	}
+	for(int i=0;i<a.size();i++)
+		for(int j=0;j<26;j++)
+			if(x[j].first==a[i])
+			{
+				cout << a[i] << " $$ " << x[j].second << " $$ " << ta << endl;
+				ta*=x[j].second;
+				break;
+			}
+	for(int i=0;i<b.size();i++)
+		for(int j=0;j<26;j++)
+			if(x[j].first==b[i])
+			{
+				cout << b[i] << " @@ " << x[j].second << " @@ " << tb << endl;
+				tb*=x[j].second;
+				break;
+			}
+	string ans;
+	cout << ta << " %% " << tb << endl;
+	if(ta==tb)
+		ans="GO";
+	else
+		ans="STAY";
+	fout << ans << endl;
+}

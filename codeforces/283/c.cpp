@@ -1,0 +1,60 @@
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <set>
+#include <string>
+
+using namespace std;
+
+set <int> s[1005];
+char a[1005][1005] , b[1005][1005];
+int n , m;
+
+int check(int x)
+{
+	for(int i=0;i<n;i++)
+		if(a[i][x]!=b[i][x])
+			return 1;
+	return 0;
+}
+
+int main()
+{
+	int ans=0;
+	cin >> n >> m;
+	for(int i=0;i<n;i++)
+		cin >> a[i];
+	for(int j=0;j<m;j++)
+	{
+		for(int i=0;i<n;i++)
+		{
+			cerr << a[i][j] << " ";
+			s[j].insert(a[i][j]);
+		}
+		cout << endl;
+	}
+	for(int j=0;j<m;j++)
+		for(int i=0;i<n;i++)
+		{
+			char k=*s[j].begin();
+			s[j].erase(k);
+			b[i][j]=k;
+		}
+	for(int i=0;i<n;i++)
+	{
+		for(int j=0;j<m;j++)
+			cout << a[i][j] << " ";
+		cout << endl;
+	}
+	cout << endl;
+	for(int i=0;i<n;i++)
+	{
+		for(int j=0;j<m;j++)
+			cout << b[i][j] << " ";
+		cout << endl;
+	}
+	for(int j=0;j<m;j++)
+		ans+=check(j);
+	cout << ans << endl;
+}
+

@@ -1,0 +1,85 @@
+#include <iostream>
+using namespace std;
+
+const int maxn=1000*1000+10;
+int a[maxn];
+int n,k;
+
+int Delete(int x,int p)
+{
+	int ne=a[x]-p;
+	a[p]-=x;
+	a[p]+=ne;
+	cerr << ne+1 << " $$ " << a[ne]+1 << " $$" << x+1 << endl;
+	a[ne]-=x;
+	a[ne]+=p;
+	mark[x]=1;
+	return ne;
+}
+
+pair <int,int> find(int st,int p)
+{
+	cerr << " -------------------------------- "  << endl;
+	cerr << st+1 << " ## " << p+1 << " :| " << a[st]+1 << endl;
+	pair<int,int> x;
+	if((st+1)%2)
+	{
+		cerr << " Fard " << endl;
+		for(int i=0;i<k-1;i++)
+		{
+			int g=p;
+			p=st;
+			st=a[st]-g;
+		}
+		st=Delete(st,p);
+		cerr << st+1 <<" %% " << p+1 << endl;
+		x.first=st;
+		x.second=p;
+	}
+	else
+	{
+		cerr << " Zoj " << endl;
+		int g=p;
+		p=st;
+		st=g;
+		for(int i=0;i<k-2;i++)
+		{
+			int h=st;
+			st=a[h]-p;
+			p=h;
+		}
+		int u=Delete(st,p);
+		st=p;
+		p=u;
+		cerr << st+1 << " :: " << p+1 << endl;
+		x.first=st;
+		x.second=p;
+	}
+	cerr << x.first+1 << " TT " << x.second+1  << endl;
+	return x;
+}
+int main()
+{
+	cin >> n >> k;
+	if(k==1)
+	{
+		cout << n << endl;
+		return 0;
+	}
+	a[0]=n;
+	a[n-1]=n-2;
+	for(int i=1;i<n-1;i++)
+		a[i]=2*i;
+	int tedad=n , s=0 , p=n-1;
+	while(tedad>1)
+	{
+		pair<int,int> z;
+		z=find(s,p);
+		s=z.first;
+		p=z.second;
+		tedad--;
+	}
+	for(int i=0;i<n;i++)
+		if(!mark[i])
+			cout << i+1 << endl;
+}

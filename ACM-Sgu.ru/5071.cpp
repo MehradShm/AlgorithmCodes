@@ -1,0 +1,125 @@
+#include <iostream>
+#include <set>
+#include <vector>
+#include <cstdio>
+
+using namespace std;
+
+const int maxn=50005;
+set<int> s[maxn];
+int bz[maxn] , p[maxn] , mark[maxn];
+vector<int> v[maxn];
+int ans[maxn];
+int inf=1000*1000+5;
+int n , m;
+
+int Merge(int x , int y)
+{
+	if(x!=y)
+	{
+		int mini=9999999;
+			for(set<int> :: iterator i=s[y].begin();i!=s[y].end();i++)
+			{
+				if(s[x].find(*i)==s[x].end())
+					s[x].insert(*i);
+				else
+					return 0;
+				set<int>::iterator t , g;
+				t=s[x].find(*i);
+				if(*t==*s[x].begin())
+				{
+					g=t++;
+					mini=min(mini,(*t-*g));
+				}
+				else
+				{
+					t++;
+					if(t==s[x].end())
+					{
+						t--;
+						g=t--;
+						mini=min(mini,(*g-*t));
+					}
+					else
+					{
+						t--;
+						set<int>::iterator t1,t2;
+						t1=t++;
+						t1--;
+						t2=t1++;
+						mini=min(mini,(*t-*t1));
+						mini=min(*t1-*t2,mini);
+					}
+				}
+			}
+			return mini;
+	}
+}
+
+int DFS(int x)
+{
+	mark[x]=1;
+	int ms=0;
+	ans[x]=inf;
+	for(int i=0;i<v[x].size();i++)
+		if(mark[v[x][i]]==0)
+		{
+			int r=DFS(v[x][i]);
+			if(r>ms)
+			{
+				bz[x]=bz[v[x][i]];
+				ms=r;
+			}
+			if(v[x][i]<n-m)
+				ans[x]=min(ans[x],ans[v[x][i]]);
+		}
+
+	for(int i=0;i<v[x].size();i++)
+		if(v[x][i]!=bz[x])
+			if(v[x][i]!=p[x])
+			{
+				int mm=Merge(bz[x],bz[v[x][i]]);
+				ans[x]=min(mm,ans[x]);
+			}
+	if(x>=n-m)
+		return 1;
+	else
+		return s[bz[x]].size();
+
+}
+
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	cin >> n >> m;
+	for(int i=1;i<n;i++)
+	{
+		int tmp;
+		cin >> tmp;
+		tmp--;
+		v[i].push_back(tmp);
+		v[tmp].push_back(i);
+		p[i]=tmp;
+	}
+	
+	for(int i=n-m;i<n;i++)
+	{
+		int tmp;
+		cin >> tmp;
+		s[i].insert(tmp);
+		bz[i]=i;
+	}
+	int h=DFS(0);
+	for(int i=0;i<n-m;i++)
+		if(ans[i]==inf)
+		{
+			int o=1;
+			o<<=31;
+			o--;
+			cout << o << " ";
+		}
+		else
+			cout << ans[i] << " ";
+	cout << endl;
+}

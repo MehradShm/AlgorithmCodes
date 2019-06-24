@@ -1,0 +1,60 @@
+// avval jadvalo shatranji mikonim. bad ghotrasho dar nazar migirim (bara har rang joda).yani be soorate 1,1,3,3,... , 2,2,4,4,... dar mian. engar mikhaim too chenin shekli rokh bezarim.  hala ou[i][j] ro tarif mikonim tedad halati ke ta satre i om e in shekle jadid too ghotraye fard, j ta rokh oomade bashe.(eu ham hamin faghat baraye zoj ha). javabam mishe sigmaye tedad halati ke i ta fil tooye ghotraye fard bian * tedad halati ke k-i ta fil tooye ghotraye zoj bian.
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+vector<int> e,o;
+int eu[12][105] , ou[12][10];
+
+int main()
+{
+	int n , k;
+	long long ans=0;
+	cin >> n >> k;
+	if(n==1)
+		cout << "1" << endl;
+	else
+	{
+		ou[1][0]=1;
+		ou[1][1]=1;
+		eu[1][0]=1;
+		eu[1][1]=2;
+		for(int i=1;i<n;i++)
+		{
+			if(i%2)
+			{
+				o.push_back(i);
+				o.push_back(i);
+			}
+			else
+			{
+				e.push_back(i);
+				e.push_back(i);
+			}
+		}
+		if(n%2)
+			o.push_back(n);
+		else
+			e.push_back(n);
+		for(int i=2;i<=n;i++)
+			for(int j=0;j<=i-1;j++)
+			{
+				ou[i][j]+=ou[i-1][j];
+				if(j)
+					ou[i][j]+=ou[i-1][j-1]*(o[i-1]-j+1);
+			}
+	
+		for(int i=2;i<=n-1;i++)
+			for(int j=0;j<=i;j++)
+			{
+				eu[i][j]+=eu[i-1][j];
+				if(j)
+					eu[i][j]+=eu[i-1][j-1]*(e[i-1]-j+1);
+			}
+		for(int i=0;i<=k;i++)
+			ans+=eu[n-1][i]*ou[n][k-i];
+		cout << ans << endl;
+	}
+			
+}

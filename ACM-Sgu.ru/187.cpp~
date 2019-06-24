@@ -1,0 +1,30 @@
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+const int maxn=130050;
+int a[maxn];
+const int maxm=2010;
+pair<int,int> p[maxm];
+
+int main()
+{
+	int n , m;
+	cin >> n >> m;
+	for(int i=1;i<=n;i++)
+		a[i]=i;
+	for(int i=0;i<m;i++)
+		cin >> p[i].first >> p[i].second;
+	cerr << " %% " << endl;
+	for(int i=0;i<m;i++)
+	{
+		int k=min(p[i].first,p[i].second);
+		int k1=max(p[i].first,p[i].second);
+		cerr << " ^^ " << endl;
+		reverse(a+k,a+k1+1);
+		cerr << " @@ " << endl;
+	}
+	for(int i=1;i<=n;i++)
+		cout << a[i] << " ";
+	cout << endl;
+}

@@ -1,0 +1,59 @@
+#include <iostream>
+using namespace std;
+int h[100000];
+int n , hsize;
+void Max_Heapify(int r ,int heapsize)
+{
+	//cerr << " :: " << endl;
+	int x;
+	if(r<=(n/2))
+	{
+		if(h[r]>h[(r*2)] and h[r]>h[(r*2)+1])
+			return ;
+		else
+		{
+			if(((r*2)+1)<heapsize or h[r*2]>h[(2*r)+1])
+				x=0;
+			else
+				x=1;
+			if(h[r]<h[(2*r)+x])
+			{
+				swap(h[r],h[(r*2)+x]);
+				Max_Heapify(h[(r*2)+x],heapsize);
+			}
+		}
+	}
+}
+
+void Heap_Sort(int x ,int heapsize)
+{
+	swap(h[1],h[heapsize]);
+	if(heapsize==1)
+		return ;
+	Max_Heapify(1,heapsize-1);
+	Heap_Sort(x-1,heapsize-1);
+}
+
+void BMH(int heapsize)
+{
+
+	int x=(n/2);
+	for(int i=x;i>0;i++)
+		Max_Heapify(i,heapsize);
+}
+
+int main()
+{
+	cin >> n;
+	hsize=n;
+	for(int i=1;i<=n;i++)
+		cin >> h[i];
+	cerr << " !! " << endl;
+	
+	BMH(hsize);
+	cerr << " @@ " << endl;
+	Heap_Sort(n,hsize);
+	for(int i=1;i<=n;i++)
+		cout << h[i] << " ";
+}
+

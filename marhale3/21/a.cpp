@@ -1,0 +1,28 @@
+#include <iostream>
+using namespace std;
+
+// The mysterious function inside the blackbox!
+int process(long long x)
+{
+  	int y=0;
+  	if(x%2)
+		  return -1;
+	for(x=x/2;x>1;x/=2) 
+	{
+		int b=(x+1)%2;
+   		y*=2; 
+   		y+=b;
+		cerr << y << endl;
+  	}
+  	return y;
+}
+
+int main() 
+{
+	long long alpha;
+  	cin >> alpha;
+  	int output = process(alpha);
+	cout << output << endl;
+	return 0;
+}
+

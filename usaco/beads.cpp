@@ -1,0 +1,120 @@
+/*
+ID: shadime1
+PROG: beads
+LANG: C++
+*/
+#include <iostream>
+#include <fstream>
+using namespace std;
+char c[500];
+
+int main()
+{
+	ifstream fin ("beads.in");
+	ofstream fout ("beads.out");
+	int n , flag=1 , ans=0 , r=0 , b=0;
+	fin >> n;
+	for(int i=1;i<=n;i++)
+	{
+		if(i<=n)
+			fin >> c[i];
+		if(c[i]=='r')
+			r=1;
+		if(c[i]=='b')
+			b=1;
+	}
+	if(!(r and b))
+		fout << n << endl;
+	else
+	{
+		int ba=0;
+		for(int i=0;i<n;i++)
+		{
+			int s1 , s2 , tedad=0 , c1=1,c2=1;
+			char rs1 , rs2;
+			if(i==0)
+			{
+				s1=n;
+				s2=1;
+			}
+			else if(i==n-1)
+			{
+				s1=n-1;
+				s2=n;
+			}
+			else
+			{
+				s1=i;
+				s2=i+1;
+			}
+			rs1=c[s1];
+			rs2=c[s2];
+			if(rs1=='w')
+				for(int j=s1;;j--)
+				{
+					if(j==0)
+						j=n;
+					if(c[j]=='r')
+					{
+						rs1='r';
+						break;
+					}
+					else if(c[j]=='b')
+					{
+						rs1='b';
+						break;
+					}
+				}
+			if(rs2=='w')
+				for(int j=s2;;j++)
+				{
+					if(j>n)
+						j%=n;
+					if(c[j]=='r')
+					{
+						rs2='r';
+						break;
+					}
+					else if(c[j]=='b')
+					{
+						rs2='b';
+						break;
+					}
+				}
+			for(int j=s1-1;;j--)
+			{
+				if(j==0)
+				j=n;
+				if(c[j]!='w' and c[j]!=rs1)
+				{
+					tedad+=c1;
+					break;
+				}
+				else
+					c1++;
+			}
+			for(int j=s2+1;;j++)
+			{
+				if(j>n)
+					j%=n;
+				if(c[j]!='w' and c[j]!=rs2)
+				{
+					tedad+=c2;
+					break;
+				}
+				else
+					c2++;
+			}
+			if(tedad>ans)
+			{
+				ans=max(ans,tedad);
+				ba=i;
+			}
+		}
+		if(ans<=n)
+			fout << ans << endl;
+		else
+			fout << n << endl;
+
+	}
+}

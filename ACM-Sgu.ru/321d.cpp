@@ -1,0 +1,104 @@
+//code dar majmoo in karo gharare anjam bede.avval bara in ke yal ba andisesho negah daram ye map tarif kardam ke ghesmate avvalesh 2 sare yale va ghesmate dovvom  andisesh. d[i] fasele rase i az rishe , tp[i] tedade yalhaye protected az root ta i , tl[i] tedade yalhaye niaz bara in ke masire i ta root sharte khaste shode ro   dashte bashe. p[i] parete i ro neshoon mide. 2 ta mark bara 2 ta dfs va marke ham bara check kardane ke yal protected has ya na. vectore v ham ke bara negah       dashtane hamsaiegi ha hast. DFS e avval bara ine ke bara har kas befahmim chand ta yal lazem dare , too DFS e dovvom k yani tedad yal haii ke chand ta az yal haii  ke niaz boode protect mishe. oonaii ke ma moshakhas mikonim javabe masalas. agar ham kasi tedad yal haye morede niazesh ba k barabar beshe yani sharte khaste       shodash ijad shode. 
+
+#include <iostream>
+#include <vector>
+#include <map>
+#include <string>
+
+using namespace std;
+
+const int maxn=200050;
+int d[maxn] , tp[maxn] , tl[maxn] , p[maxn];
+int mark[maxn] , mark1[maxn] , marke[maxn];
+vector<int> v[maxn] , ans;
+map<pair<int,int>,int> m;
+
+void DFS(int x)
+{
+	mark[x]=1;
+	for(int i=0;i<v[x].size();i++)
+	{
+		if(mark[v[x][i]]==0)
+		{
+			int u=v[x][i];
+			d[u]=d[x]+1;
+			pair<int,int> o;
+			o.first=x;
+			p[u]=x;
+			o.second=u;
+			tp[u]=tp[x]+marke[m[o]];
+			tl[u]=((d[u]+1)/2)-tp[u];
+			DFS(u);
+		}
+	}
+
+	for(int i=0;i<v[x].size();i++)
+		if(v[x][i]!=p[x])
+			tl[x]=max(tl[x],tl[v[x][i]]);
+}
+
+void DFST(int x , int k)
+{
+	if(tl[x]==k)
+		return;
+	mark1[x]=1;
+	for(int i=0;i<v[x].size();i++)
+		if(mark1[v[x][i]]==0)
+		{
+			pair<int,int> y;
+			y.first=x;
+			y.second=v[x][i];
+			if(marke[m[y]])
+				DFST(v[x][i],k);
+			else
+			{
+				ans.push_back(m[y]);
+				marke[m[y]]=1;
+				DFST(v[x][i],k+1);
+			}
+		}
+}
+
+int main()
+{
+	int n;
+	cin >> n;
+	for(int i=1;i<=n-1;i++)
+	{
+		string s;
+		int t1 , t2;
+		cin >> t1 >> t2;
+		t1--;
+		t2--;
+		cin>> s;
+		v[t1].push_back(t2);
+		v[t2].push_back(t1);
+		pair<int,int> p1 , p2;
+		p1.first=t1;
+		p1.second=t2;
+		p2.first=t2;
+		p2.second=t1;
+		pair<pair<int,int>,int> s1 , s2;
+		s1.first=p1;
+		s1.second=i;
+		s2.first=p2;
+		s2.second=i;
+		m.insert(s1);
+		m.insert(s2);
+		if(s=="almost")
+		{
+			string f;
+			cin >> f;
+		}
+		else
+			marke[i]=1;
+		
+	}
+	DFS(0);
+	DFST(0,0);
+	cout << ans.size() << "\n";
+	for(int i=0;i<ans.size();i++)
+		cout << ans[i] << " ";
+	if(ans.size())
+		cout << "\n";
+}

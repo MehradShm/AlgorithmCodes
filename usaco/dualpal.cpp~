@@ -1,0 +1,78 @@
+/*
+ID: shadime1
+PROG: dualpal
+LANG: C++
+*/
+#include <iostream>
+#include <fstream>
+using namespace std;
+int a[10];
+
+int cp(int size , int k  , int m)
+{
+	int x=0;
+	if(size%2==1)
+		x=1;
+//	cerr << k << " ^^ " << m << endl; 
+//	for(int i=size-1;i>=0;i--)
+//		cout << a[i];
+//	cout << endl;
+	if(x==0)
+		for(int i=0;i<=((size-1)/2);i++)
+			if(a[i]!=a[size-i-1])
+				return 0;
+	if(x==1)
+		for(int i=0;i<(size/2);i++)
+			if(a[i]!=a[size-i-1])
+				return 0;
+	return 1;
+}
+
+int Mabna(int n , int m)
+{
+	int s=0 , k=n;
+	while(n>=m)
+	{
+		a[s]=n%m;
+		//cerr << n << " :: " << m << " :: " << a[s]  << endl;
+		n/=m;
+		s++;
+	}
+	if(n>0)
+	{
+		a[s]=n;
+		s++;
+	}
+	if(cp(s,k,m))
+	{
+		//cerr << m << endl;
+		//cerr << " ================================ " << endl;
+		return 1;
+	}
+	return 0;
+}
+int Check(int n)
+{
+	int tedad=0;
+	for(int i=2;i<=10;i++)
+		tedad+=Mabna(n,i);
+	return tedad;
+}
+		
+int main()
+{
+	ifstream fin("dualpal.in");
+	ofstream fout("dualpal.out");
+	int x , s;
+	fin >> x >> s;
+	int counter=0;
+	for(int i=s+1;counter<x;i++)
+	{
+		if(Check(i)>1)
+		{
+			//cerr << i << " %% " << endl;
+			fout << i << endl;
+			counter++;
+		}
+	}
+}

@@ -1,0 +1,98 @@
+/*
+ID: shadime1
+PROG: palsquare
+LANG: C++
+*/
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+int n;
+int a[10] , b[100];
+
+void print(int p)
+{
+	if(p==10)
+		fout << 'A';
+	else if(p==11)
+		fout << 'B';
+	else if(p==12)
+		fout << 'C';
+	else if(p==13)
+		fout << 'D';
+	else if(p==14)
+		fout << 'E';
+	else if(p==15)
+		fout << 'F';
+	else if(p==16)
+		fout << 'G';
+	else if(p==17)
+		fout << 'H';
+	else if(p==18)
+		fout << 'I';
+	else if(p==19)
+		fout << 'J';
+	else
+		fout << p;
+}
+int CP(int size)
+{
+	int x=0;
+	if(size%2==1)
+		x=1;
+	if(x==0)
+		for(int i=0;i<=((size-1)/2);i++)
+			if(b[i]!=b[size-i-1])
+				return 0;
+	if(x==1)
+		for(int i=0;i<(size/2);i++)
+			if(b[i]!=b[size-i-1])
+				return 0;
+	return 1;
+}
+
+void Check(int x)
+{
+	int k=x , sa=0 , sb=0;
+	while(x>=n)
+	{
+		a[sa]=x%n;
+		x/=n;
+		sa++;
+	}
+	if(x>0)
+	{
+		a[sa]=n;
+		sa++;
+	}
+	k*=k;
+	while(k>=n)
+	{
+		b[sb]=k%n;
+		k/=n;
+		sb++;
+	}
+	if(k>0)
+	{
+		a[sb]=n;
+		sb++;
+	}
+	if(CP(sb))
+	{
+		for(int i=sa-1;i>=0;i--)
+			print(sa);
+		fout << " ";
+		for(int i=sb-1;i>=0;i--)
+			print(sb);
+		fout << endl;
+	}
+}
+
+int main()
+{
+	ifstream fin("palsquare.in");
+	ofstream fout("palsquare.out");
+	fin >> n;
+	for(int i=1;i<=300;i++)
+		Check(i);
+}

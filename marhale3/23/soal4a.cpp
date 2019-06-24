@@ -1,0 +1,18 @@
+#include <iostream>
+using namespace std;
+int main()
+{
+	long long ans=0 , delta;
+	cin >> delta;
+	for(int i=1;i<delta;i++)
+		for(int j=i;j<delta;j++)
+			if((i*j)%1392==0)
+			{
+				if(i!=j)
+					ans+=2;
+				else
+					ans++;
+			}
+	ans%=delta;
+	cout << ans << endl;
+}	

@@ -1,0 +1,80 @@
+#include <iostream>
+using namespace std;
+
+const int MAXN=100005;
+int ans[MAXN] , heap[MAXN] , a[MAXN] , b[MAXN];
+int heapSize=0;
+
+void maxHeap_insert(int x)
+{
+	heapSize++;
+	heap[heapSize]=x;
+	int k=heapSize;
+	while(k>1 and heap[k]>heap[k/2])
+	{
+		swap(heap[k],heap[k/2]);
+		k/=2;
+	}
+	return ;
+}
+
+void heapify(int k)
+{
+	if(2*k<=heapSize)
+		if(heap[2*k]>heap[k])
+		{
+			swap(heap[2*k],heap[k]);
+			heapify(2*k);
+		}
+	if((2*k)+1<=heapSize)
+		if(heap[(2*k)+1]>heap[k])
+		{
+			swap(heap[(2*k)+1] , heap[k]);
+			heapify((2*k)+1);
+		}
+	return ;
+}
+
+int main()
+{
+	int sum_erfan=0 , sum_javad=0;
+	int n;
+	cin >> n;
+	for(int i=1;i<=n;i++)
+		cin >> a[i];
+	ans[1]=1;
+	sum_javad+=a[1];
+	heap[1]=a[1];
+	heapSize++;
+	for(int i=2;i<=n;i++)
+	{
+		if(sum_javad<=sum_erfan)
+		{
+			//cerr << i << " : " << a[i] << endl;
+			maxHeap_insert(a[i]);
+			ans[i]=ans[i-1]+1;
+			sum_javad+=a[i];
+		}
+		else
+			if(a[i] < heap[1])
+			{
+				sum_javad-=(heap[1]-a[i]);
+				sum_erfan+=heap[1];
+				heap[1]=a[i];
+				heapify(1);
+				ans[i]=ans[i-1];
+			}
+			else
+			{
+				sum_erfan+=a[i];
+				ans[i]=ans[i-1];
+			}
+		cerr << i << ": ";	
+		for(int i=1;i<=heapSize;i++)
+			cout << heap[i] << " ";
+		cerr << endl << sum_javad << " !! " << sum_erfan << endl;
+		cout << endl << " ==================== " << endl;
+		
+	}
+	cout << ans[n] << endl;
+}

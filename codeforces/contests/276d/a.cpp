@@ -1,0 +1,41 @@
+#include <iostream>
+using namespace std;
+
+const int maxn=3050;
+int a[maxn];
+int ans;
+pair<int,int> k[maxn];
+
+void sort(int x)
+{
+	if(x==0)
+		return ;
+	int mi=0;
+	long long inf=-1000*1000*1000;
+	for(int i=0;i<=x;i++)
+		if(a[i]>=inf)
+		{
+			inf=a[i];
+			mi=i;
+		}
+	if(x!=mi)
+	{
+		swap(a[mi],a[x]);
+		k[ans].first=mi;
+		k[ans].second=x;
+		ans++;
+	}
+	sort(x-1);
+}
+
+int main()
+{
+	int n;
+	cin >> n;
+	for(int i=0;i<n;i++)
+		cin >> a[i];
+	sort(n-1);
+	cout << ans << endl;
+	for(int i=0;i<ans;i++)
+		cout << k[i].first << " " << k[i].second << endl;
+}

@@ -1,0 +1,60 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+int p[1000];
+vector<int> a,b,c;
+
+int move(int k)
+{
+	if(a[a.size()-1]==k)
+	{
+		b.push_back(a[a.size()-1]);
+		a.pop_back();
+	}
+	b.pop_back();
+}
+
+int Check(int k , int n)
+{
+	cerr << k << " :: " << endl;
+	if(k==n)
+		return 1;
+	cerr << c.size() << " HAHA " << n+1-p[k] << endl;
+	if(c.size()>=n+1-p[k])
+	{
+		cerr << " $$ " << endl;
+		while(c.size() and c[c.size()-1]!=p[k])
+		{
+			a.push_back(c[c.size()-1]);
+			c.pop_back();
+		}
+		cerr << " %% " << endl;
+		a.push_back(c[c.size()-1]);
+		c.pop_back();
+	}
+	cerr << " !! " << endl;
+	if((a.size() and a[a.size()-1]==p[k]) or (b.size() and b[b.size()-1]==p[k]))
+	{
+		cerr << " LOL " << endl;
+		move(p[k]);
+		cerr << " @@ " << endl;
+		return Check(k+1,n);
+	}
+	cerr << " ^^ " << endl;
+	return 0;
+}
+
+int main()
+{
+	int n;
+	cin >> n;
+	for(int i=0;i<n;i++)
+	{
+		cin >> p[i];
+		c.push_back(n-i);
+	}
+	if(Check(0,n))
+		cout << " Yes " << endl;
+	else
+		cout << " No " << endl;
+}

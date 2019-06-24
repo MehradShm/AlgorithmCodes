@@ -1,0 +1,60 @@
+#include <iostream>
+#include <algorithm>
+#include <vector>
+using namespace std;
+const int maxn=17*1000;
+int a[maxn] , b[maxn] , mark[maxn] , p[maxn] , ans[maxn];
+vector <int> c[maxn];
+void DFS(int x, int n)
+{
+	mark[x]=1;
+	for(int i=0;i<c[x].size();i++)
+		if(mark[c[x][i]]==0)
+		{
+			p[c[x][i]]=x;
+			DFS(c[x][i],n);
+			a[x]+=a[c[x][i]];
+		}
+	a[x]++;
+	int highest=0 , sum=0;
+	for(int i=0;i<c[x].size();i++)
+		if(c[x][i]!=p[x])
+		{ 
+			highest=max(highest,a[c[x][i]]);
+			sum+=a[c[x][i]];
+		}
+	sum++;
+	highest=max(highest,(n-sum));
+	b[x]=highest;
+}
+int main()
+{
+	int n , tedad=0,mini=99999;
+	cin >> n;
+	for(int i=0;i<(n-1);i++)
+	{
+		int a1 , a2;
+		cin >> a1 >> a2;
+		a1--;
+		a2--;
+		c[a1].push_back(a2);
+		c[a2].push_back(a1);
+	}
+	DFS(0,n);
+	b[0]=0;
+	for(int i=0;i<c[0].size();i++)
+		b[0]=max(b[0],a[c[0][i]]);
+	for(int i=0;i<n;i++)
+		mini=min(mini,b[i]);
+	for(int i=0;i<n;i++)
+		if(b[i]==mini)
+		{
+			ans[tedad]=i+1;
+			tedad++;
+		}
+	sort(ans,ans+tedad);
+	cout << mini << " " << tedad << endl;
+	for(int i=0;i<tedad;i++)
+		cout << ans[i] << " ";
+}
+

@@ -1,0 +1,71 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+pair <int,int> a[17000];
+int mark[17000] , t[17000] , p[17000] , maxi[17000] , ans[17000];
+void DFS(int x, vector <int> c[])
+{
+	mark[x]=1;
+	for(int i=0;i<c[x].size();i++)
+		if(mark[c[x][i]]==0)
+		{	
+			p[c[x][i]]=x;
+			DFS(c[x][i],c);
+			a[x].first+=a[c[x][i]].first+t[c[x][i]]+1;
+			t[x]+=t[c[x][i]]+1;
+		}
+}
+void DFS1(int x , vector <int> c[] ,int n)
+{
+	mark[x]=1;
+	if(p[x]!=1)
+		a[x].second=a[p[x]].first+a[p[x]].second-a[x].first-t[x]-1+(n-t[x]-1);
+	for(int i=0;i<c[x].size();i++)
+		if(mark[c[x][i]]==0)
+			DFS1(c[x][i],c,n);
+}
+int main()
+{
+	int n , tedad=0;
+	cin >> n;
+	vector <int> c[n+2];
+	for(int i=1;i<n;i++)
+	{
+		int x , y;
+		cin >> x >> y;
+		c[x].push_back(y);
+		c[y].push_back(x);
+	}
+	DFS(1,c);
+	a[1].second=a[1].first;
+	int k=a[1].second-n+1;
+	for(int i=0;i<=n;i++)
+		mark[i]=0;
+	for(int i=0;i<c[1].size();i++)
+	{
+		int z=n-2-t[c[1][i]];
+		a[c[1][i]].second=(k-a[c[1][i]].first)+(z*2)+1;
+	}
+	for(int i=0;i<c[1].size();i++)
+		DFS1(c[1][i],c,n);
+	for(int i=1;i<=n;i++)
+		if(i!=1)
+			maxi[i]=a[i].first+a[i].second;
+		else
+			maxi[i]=a[i].first;
+	int best=9999999;
+	for(int i=1;i<=n;i++)
+		best=min(best,maxi[i]);
+	for(int i=1;i<=n;i++)
+		if(maxi[i]==best)
+		{
+			ans[tedad]=i;
+			tedad++;
+		}
+	sort(ans,ans+tedad);
+	cout << best << " " << tedad << endl;
+	for(int i=0;i<tedad;i++)
+		cout << ans[i] << " ";
+
+}

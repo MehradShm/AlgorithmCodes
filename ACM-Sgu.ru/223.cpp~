@@ -1,0 +1,101 @@
+//dynamic namaii :) . check bara ine ke biad bebine 2 ta bitmask ba ham moshkel daran ya na. t1 tedade 1 haye har adado dar miare. check 2 bara ine ke bebinim khode bit mask 2 ta 1 e mojaver nadashte bashe. problem neshoon mide ye bit mask khodesh moshkel dare ye na. match neshoon mide 2 ta ba  ham moshkel daran ya na. arayeye to ham tedade 1 e har bitmasko neshoon mide.
+
+
+#include <iostream>
+#include <cstdio>
+#include <cstring>
+using namespace std;
+
+long long d[11][105][1025]; 
+bool a[15] , b[15] , Problem[1025] , c[15];
+bool match[1025][1025];
+int to[1025];
+int n , k;
+
+void PIA(int x , bool c[])
+{
+	int te=0;
+	while(x)
+	{
+		c[te]=x%2;
+		x>>=1;
+		te++;
+	}
+	for(int i=te;i<n;i++)
+		c[i]=0;
+}
+
+bool Check(int x , int y)
+{ 
+	memset(a,0,sizeof(a));
+	memset(b,0,sizeof(b));
+	PIA(x,a);
+	PIA(y,b);
+	for(int i=0;i<n;i++)
+		if(b[i]==1)
+			if(a[i-1]==1 or a[i]==1 or a[i+1]==1)
+				return 0;
+	return 1;
+}
+
+int t1(int x)
+{
+	int t=0;
+	while(x)
+	{
+		if((x%2)==1)
+			t++;
+		x>>=1;
+	}
+	return t;
+}
+int Check2(int x)
+{
+	PIA(x,c);
+	for(int i=0;i<n;i++)
+		if(c[i]==1)
+			if(c[i+1]==1)
+				return 1;
+	return 0;
+}
+
+int main()
+{
+	cin >> n >> k;
+	int f=1;
+	f<<=n;
+	for(int i=0;i<f;i++)
+	{
+		int g=t1(i);
+		to[i]=g;
+		Problem[i]=Check2(i);
+		if(Problem[i]==0 and to[i]<=k)
+			d[1][to[i]][i]=1;
+	}
+	for(int i=0;i<f-1;i++)
+		for(int j=i+1;j<f;j++)
+			match[i][j]=Check(i,j);
+	match[0][0]=1;
+	long long ans=0;
+	// bara har satr miaim meghdaresho mirizim bara satre paiinish. i satre feli. j bitmaske satre i+1. w bitmaske satr i. 
+	for(int i=1;i<n;i++)
+	{
+		//cerr << " --------------------- " << endl;
+		for(int j=0;j<f;j++)
+			if(Problem[j]==0)
+				for(int w=0;w<f;w++)
+					if(Problem[w]==0)
+						if(match[j][w] or match[w][j])
+							if(to[w]<=k)
+								for(int t=to[w];t<=k;t++)
+								{
+									//cout << "i+1: " << j << " i: " << w << " tedad i+1:" << t+to[j] << " tedad i:" << t << " Halat: " << d[i][t][w] << endl;
+									d[i+1][t+to[j]][j]+=d[i][t][w];
+								}
+	}
+								
+	for(int i=0;i<f;i++)
+		ans+=d[n][k][i];
+	cout << ans << endl;
+}
+

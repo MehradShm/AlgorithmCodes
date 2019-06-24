@@ -1,0 +1,62 @@
+#include <iostream>
+using namespace std;
+int a[1400000] , b[9] , c[9];
+int Prime(int x)
+{
+	if(x<2)
+		return 0;
+	else
+	{
+		for(int i=2;i*i<=x;i++)
+			if(x%i==0)
+				return 0;
+		return 1;
+	}
+}
+int read(int x , int y)
+{
+	int z=1 , meghdar=0;
+	for(int i=x;i<=y;i++)
+	{
+		meghdar+=(b[i]*z);
+		z*=10;
+	}
+	return meghdar;
+}
+int Put(int x)
+{
+	for(int i=0;x>0;i++)
+	{
+		b[i]=x%10;
+		x/=10;
+		if(x==0)
+			return i+1;
+	}
+}
+int Doost(int x)
+{
+	int len=Put(x) , tedad=0;
+	for(int i=0;i<len;i++)
+		for(int j=i;j<len;j++)
+		{
+			if(b[j])
+			{
+				int meghdar=read(i,j);
+				if(Prime(meghdar))
+					tedad++;
+			}
+		}
+	return tedad;
+}
+int main()
+{
+	int ans=0 , delta;
+	cin >> delta;
+	int x=Doost(130312);
+	//return 0;
+	for(int i=1;i<=1389000;i++)
+		ans+=(Doost(i));
+
+	cout << ans << endl;
+	cout << (ans)%delta << endl;
+}

@@ -1,0 +1,34 @@
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <queue>
+
+using namespace std;
+
+const int maxn=100050;
+pair<int,int> a[maxn] , d[maxn];
+int ans[maxn];
+queue <int > v;
+
+int main()
+{
+	int n;
+	cin >> n;
+	for(int i=1;i<=n;i++)
+	{
+		cin >> a[i].first >> a[i].second;
+		if(i%2==0)
+			swap(a[i],a[i-1]);
+	}
+	for(int i=0;i<=n;i++)
+	{
+		if(a[i].second!=0)
+			ans[i+1]=a[i].second;
+		if(a[i].first!=0)
+			ans[i-1]=a[i].first; 
+	}
+	for(int i=1;i<=n;i++)
+		cout << ans[i] << " ";
+	cout << endl;
+
+}

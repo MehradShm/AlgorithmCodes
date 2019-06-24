@@ -1,0 +1,59 @@
+#include <iostream>
+#include <algorithm>
+
+using namespace std;
+
+const int maxn=505 , maxk=105 ;
+int k[maxk] , pt[maxn][maxk];
+pair<int,int> np[maxn][maxk] , wi[maxn][maxk] , w[maxk];
+int main()
+{
+	int n , count=0;
+	cin >> n;
+	for(int i=0;i<n;i++)
+	{
+		cin >> k[i];
+		count+=k[i];
+	}
+
+	for(int i=0;i<n;i++)
+		for(int j=0;j<k[i];j++)
+			cin >> np[i][j].first;
+	for(int i=0;i<n;i++)
+	{
+		for(int j=0;j<k[i];j++)
+		{
+			cin >> np[i][j].second;
+			w[i].first+=(np[i][j].first);
+			wi[i][j].first=np[i][j].second;
+			wi[i][j].second=j;
+		}
+		w[i].second=i;
+	}
+
+	sort(w,w+n);
+	for(int i=0;i<n;i++)
+		cout << w[i].second << " !! " << endl;
+	long long time=0 , ans=0;
+	count=1;
+	for(int i=0;i<n;i++)
+	{
+		sort(wi[i],wi[i]+k[w[i].second]);
+		for(int j=k[w[i].second]-1;j>=0;j--)
+		{
+			time+=np[w[i].second][wi[i][j].second].first;
+			ans+=time*np[w[i].second][wi[i][j].second].second;
+			pt[w[i].second][wi[i][j].second]=count;
+			//cout << np[w[i].second][wi[i][j].second].first << " ## " << np[w[i].second][wi[i][j].second].second << endl;
+			count++;
+		}
+	} 
+	cout << ans << endl;
+	
+	for(int i=0;i<n;i++)
+		for(int j=0;j<k[i];j++)
+			cout << pt[i][j] << " ";
+	cout << endl;
+	
+	return 0;
+}

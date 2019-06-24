@@ -1,0 +1,62 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+const int maxn=100*100+20;
+vector <int> c[maxn];
+int in[maxn] , out[maxn] , mark[maxn] , v[maxn][maxn] , k[maxn];
+void DFS(int x)
+{
+	mark[x]=1;
+	for(int i=0;i<c[x].size();i++)
+		if(mark[c[x][i]]==0)
+		{
+			p[c[x][i]]=x;
+			DFS(c[x][i]);
+			if(in[c[x][i]]+v[x][c[x][i]]>=in[x])
+			{
+				k[x]=c[x][i];
+				in[x]=max(in[c[x][i]]+v[x][c[x][i]],in[x]);
+			}
+		}
+}
+void DFS1(int x)
+{
+	mark[x]=0;
+	if(x!=k[p[x]])
+		out[x]=max(out[p[x]]+v[x][p[x]],in[k[p[x]]]+v[p[x]][k[p[x]]]+v[x][p[x]]);
+	else
+	{
+		int h=0 , g=0;
+		for(int i=0;i<c[p[x]].size();i++)
+			if(c[p[x]][i]!=x)
+			{
+				if(in[c[p[x]][i]]>h)
+				{
+					h=max(h,in[c[p[x]][i]]);
+					g=c[p[x]][i];
+				}
+			}
+		out[x]=max(out[p[x]]+v[x][p[x]],h+v[x][p[x]]+v[p[x]][c[p[x]][g]]);
+	}
+	for(int i=0;i<c[x].size();i++)
+		if(mark[c[x][i]])
+			DFS1(c[x][i]);
+}
+int main()
+{
+	int n;
+	cin >> n;
+	for(int i=2;i<=n;i++)
+	{
+		int a1 , a2;
+		cin >> a1 >> a2;
+		c[i].push_back(a1);
+		c[a1].push_back(i);
+		v[i][a1]=a2;
+		v[a1][i]=a2;
+	}
+	DFS(1);
+	DFS1(1);
+	for(int i=1;i<=n;i++)
+		cout << max(in[i],out[i]) << endl;
+}

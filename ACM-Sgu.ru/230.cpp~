@@ -1,0 +1,56 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+const int maxn=105;
+vector<int> c[maxn];
+int tedad=1;
+int n , m;
+
+int ans[maxn];
+bool mark[maxn];
+
+void DFS(int x)
+{
+	mark[x]=1;
+	for(int j=0;j<c[x].size();j++)
+		if(mark[c[x][j]]==0)
+			DFS(c[x][j]);
+	ans[x+1]=tedad;
+	tedad++;
+}
+
+int Check()
+{
+	for(int i=0;i<n;i++)
+		for(int j=0;j<c[i].size();j++)
+			if(ans[c[i][j]+1]>ans[i+1])
+				return 0;
+	return 1;
+}
+int main()
+{
+	ios::sync_with_stdio(false);
+	int flag=1;
+	cin >> n >> m;
+	for(int j=0;j<m;j++)
+	{
+		int t1 , t2;
+		cin >>t1 >> t2;
+		t1--;
+		t2--;
+		c[t2].push_back(t1);
+	}
+	int k1 , k2=101;
+	for(int i=0;i<n;i++)
+		if(mark[i]==0)
+			DFS(i);
+	if(Check())
+		for(int i=1;i<=n;i++)
+			cout << ans[i] << " ";
+	else
+		cout << "No solution";
+	cout << endl;
+}

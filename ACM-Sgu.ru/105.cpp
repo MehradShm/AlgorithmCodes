@@ -1,0 +1,16 @@
+#include <iostream>
+#include <cstdio>
+using namespace std;
+int main()
+{
+	int n;
+	cin >> n;
+	long long ans;
+	if(n%3==0)
+		ans=((n*2)/3);
+	else if(n%3==1)
+		ans=(((n-1)*2)/3);
+	else if(n%3==2)
+		ans=(((n-2)*2)/3)+1;
+	cout << ans << "\n";
+}
