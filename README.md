@@ -9,6 +9,6 @@ Also You Can Find Marhale3 Problems On :https://opedia.ir/%D8%B3%D9%88%D8%A7%D9%
 
 Other codes either are famous algorithms or some problems that were given by our teachers.
 
-And I'm Sure You Are Familiar With Codeforces.com and usaco.com .
+And I'm Sure You Are Familiar With [Codeforces.com](http://codeforces.com/) and [usaco.org](http://www.usaco.org/) .
 
 Enjoy. :)
