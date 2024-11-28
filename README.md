@@ -11,4 +11,3 @@ Other codes are either famous algorithms or some problems that were given by our
 
 And I'm Sure You Are Familiar With [Codeforces.com](http://codeforces.com/) and [usaco.org](http://www.usaco.org/) .
 
-Enjoy. :)
